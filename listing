@@ -1,0 +1,43 @@
+import random
+import heapq
+import time
+
+def merge_lists():
+    n = [20, 200, 2000, 20000, 200000]
+    list_of_arrays = []
+
+    # Creating a list of arrays
+    for size in n:
+        random_array = [random.randint(100, 1000) for _ in range(size)]  # Generates random integers between 100 and 1000
+        random_array.sort()
+        list_of_arrays.append(random_array)
+
+    time_taken = []
+    time_run = []
+
+    for array in list_of_arrays:
+        start_time = time.time()
+        min_heap = array.copy()  # Use the array as the heap (heapq will maintain the heap property)
+        heapq.heapify(min_heap)
+        total_time = 0
+        merging_sequence = []
+
+        while len(min_heap) > 1:
+            min1 = heapq.heappop(min_heap)
+            min2 = heapq.heappop(min_heap)
+            merged_size = min1 + min2
+            merging_sequence.append(merged_size)
+            heapq.heappush(min_heap, merged_size)
+            total_time += merged_size
+
+        end_time = time.time()
+        time_taken.append(total_time)
+        time_run.append(end_time - start_time)
+
+    # Printing the results
+    print("n\t\tTime Taken for Merge\t\tTime Taken in Seconds")
+    for i in range(len(n)):
+        print(f"{n[i]}\t\t{time_taken[i]}\t\t\t\t{time_run[i]:.6f}")
+
+if __name__ == "__main__":
+    merge_lists()
